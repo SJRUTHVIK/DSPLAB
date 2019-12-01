@@ -22,6 +22,5 @@ for(k=0;k<xlen;k++)
 {
 if(((n-k)>=0)&&((n-k)<7))
 y[n]+=x[k]*h[n-k];
-printf("%d ",y[n]);
 }
 }}
