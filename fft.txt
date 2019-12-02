@@ -1,0 +1,88 @@
+#include<stdio.h>
+#include<math.h>
+#define pi 3.1415
+#define real 0
+#define img 1
+#define n 8
+#define ldn 3
+void complexmul(float x1[2],float x2[2],float r1[2]);
+void revbinpermute(float a[n][2]);
+void fft(float a[n][2],int);
+int revbin(int);
+void main()
+{
+int j;
+float x[n][2];
+float magni;
+printf("enter the seq\n");
+for(j=0;j<n;j++)
+{
+scanf("%f",&x[j][real]);
+x[j][img]=0;
+}
+fft(x,-1);
+printf("output is\n");
+for(j=0;j<n;j++)
+{
+magni=sqrt(x[j][real]*x[j][real]+x[j][img]*x[j][img]);
+printf("\ny[%2d]=%8.3f%",j,magni);
+}}
+void fft(float a[n][2],int is)
+{
+int ldm,r,j,m,mh;
+float u[2],v[2],e[2],theta;
+revbinpermute(a);
+for(ldm=1;ldm<=ldn;ldm++)
+{
+m=2;
+m=m<<(ldm-1);
+mh=m/2;
+for(r=0;r<=n-m;r+=m)
+for(j=0;j<=mh-1;j++)
+{
+theta=(float)(is*2*pi*j)/(float)m;
+e[real]=cos(theta);
+e[img]=sin(theta);
+u[real]=a[r+j][real];
+u[img]=a[r+j][img];
+complexmul(a[r+j+mh],e,v);
+a[r+j][real]=u[real]+v[real];
+a[r+j][img]=u[img]+v[img];
+a[r+j+mh][real]=u[real]-v[real];
+a[r+j+mh][img]=u[img]-v[img];
+}}}
+void revbinpermute(float a[n][2])
+{
+int x,r;
+float temp[2];
+for(x=0;x<n;x++)
+{
+r=revbin(x);
+if(r>x)
+{
+temp[real]=a[x][real];
+temp[img]=a[x][img];
+a[x][real]=a[r][real];
+a[x][img]=a[r][img];
+a[r][real]=temp[real]; 
+a[r][img]=temp[img];
+}}}
+int revbin(int x)
+{
+int j=0,count=ldn;
+while(count>0)
+{
+j=j<<1;
+j=j|(x&0x0001);
+x=x>>1;
+count--;
+}
+return j;
+}
+void complexmul(float x1[2],float x2[2],float r1[2])
+{
+r1[real]=x1[real]*x2[real]-x1[img]*x2[img]; 
+r1[img]=x1[img]*x2[real]-x1[real]*x2[img];
+}
+ 
+ 
