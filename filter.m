@@ -1,0 +1,14 @@
+n=input('order pleaes');
+fs=input('samp freq');
+fc=input('cutofffreq');
+rp=1;
+wn=fc/(fs/2);
+[b,a]=cheby1(n,rp,wn);
+pause;
+w=0:0.1:pi;
+[h,om]=freqz(b,a,w);
+an=20*log10(abs(h));
+plot(om/pi,an);
+grid;
+xlabel('freq');
+ylabel('gain');
